@@ -1,6 +1,6 @@
-# CIKM2021 AnalyticCup Track 1 rank 6 solution
+# ACM CIKM 2021 AnalyticCup Track 1 rank 6 solution
 
-# Results
+The table prvoides the models and results of various models on [ACM CIKM 2021 AnalyticCup Track 1](https://algo.browser.qq.com/#en)
 | Model                 | Valid  | Test   |
 |-----------------------|--------|--------|
 | LSTM                  | 0.8510 | 0.8039 |
