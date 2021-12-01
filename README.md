@@ -11,5 +11,5 @@ The table prvoides the models and results of various models on [ACM CIKM 2021 An
 | GRU-LXMERT            | 0.8532 | 0.8161 |
 | Inception-LXMERT      | 0.8536 | 0.8152 |
 | LightLXMERT           | 0.8538 | 0.8198 |
-| LightECTNet           | 0.8574 | 0.8239 |
-| Ensemble              |        | 0.8287 |
+| ***LightECTNet***           | ***0.8574*** | ***0.8239*** |
+| **Ensemble**              |        | **0.8287** |
