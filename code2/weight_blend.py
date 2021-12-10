@@ -30,7 +30,7 @@ seed_everything(seed=42)
 dataset = LoadDataset(data_path=DATA_PATH, debug=False)
 
 file_list = {
-    '../final_output/light_cross_lxmert1013/': 0.3,
+    '../final_output/LightECTNet/': 0.3,
     '../final_output/light_lxmert1009/': 0.2,
     '../final_output/inception_lxmert1001/': 0.1,
     '../final_output/gru_lxmert1001/': 0.1,
