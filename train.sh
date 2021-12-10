@@ -1,4 +1,4 @@
-# Download pretrained weights
+# Download pretrained weights (For LXMERT, LightECTNet doesn't use these. If you only run LightECTNet, just comment out.)
 # :<<!
 cd ./data/bert-base-chinese
 wget https://huggingface.co/bert-base-chinese/resolve/main/pytorch_model.bin
