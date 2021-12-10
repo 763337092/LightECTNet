@@ -47,7 +47,7 @@ DATA_PATH = '../data/new_data/'
 W2V_PATH = '../data/new_data/title_w2v_final'
 # ROOT_PRETRAINED_PATH = '/search/odin/lida/pytorch_pretrained_models_nlp'
 # PRETRAINED_MODEL_PATH = f'{ROOT_PRETRAINED_PATH}/bert-base-chinese/'
-SAVE_PATH = '../final_output/light_cross_lxmert1013'
+SAVE_PATH = '../final_output/LightECTNet'
 if not os.path.exists(SAVE_PATH):
     os.mkdir(SAVE_PATH)
 if DEBUG:
@@ -55,9 +55,9 @@ if DEBUG:
     if not os.path.exists(SAVE_PATH):
         os.mkdir(SAVE_PATH)
 
-class LightLxmertConfig(object):
+class LightECTNetConfig(object):
     def __init__(self):
-        self.cross_layers = 2
+        self.ect_block_nums = 2
         self.hidden_size = 768
         self.intermediate_size = 3072
         self.hidden_dropout_prob = 0.1
@@ -356,15 +356,15 @@ class PointClfModel(nn.Module):
         self.video_linear = nn.Linear(dataset.video_shape[1], config.hidden_size)
 
         self.text_encoder = nn.ModuleList(
-            [BertLayer(config) for _ in range(config.cross_layers)]
+            [BertLayer(config) for _ in range(config.ect_block_nums)]
         )
 
         self.video_encoder = nn.ModuleList(
-            [BertLayer(config) for _ in range(config.cross_layers)]
+            [BertLayer(config) for _ in range(config.ect_block_nums)]
         )
 
         self.cross_encoder = nn.ModuleList(
-            [LXRTXLayer(config) for _ in range(config.cross_layers)]
+            [LXRTXLayer(config) for _ in range(config.ect_block_nums)]
         )
 
         self.encode_linear = nn.Linear(config.hidden_size*4, emb_dim)
@@ -386,7 +386,7 @@ class PointClfModel(nn.Module):
 
         # print('text_encode: ', text_encode.shape)
         # print('video_encode: ', video_encode.shape)
-        for i in range(config.cross_layers):
+        for i in range(config.ect_block_nums):
             text_encode = self.text_encoder[i](text_encode, None)
             video_encode = self.video_encoder[i](video_encode, None)
             text_encode, video_encode = self.cross_encoder[i](text_encode, None, video_encode, None)
@@ -484,7 +484,7 @@ if POINTWISE_TRAIN:
 
     torch.cuda.empty_cache()
     device = torch.device("cuda:0")
-    config = LightLxmertConfig()
+    config = LightECTNetConfig()
     model = PointClfModel(ENCODE_DIM, config)
     model.to(device)
     model = nn.DataParallel(model)
@@ -560,7 +560,7 @@ if PAIRWISE_TRAIN:
 
         torch.cuda.empty_cache()
         device = torch.device("cuda:0")
-        config = LightLxmertConfig()
+        config = LightECTNetConfig()
         point_model = PointClfModel(ENCODE_DIM, config)
         point_model = nn.DataParallel(point_model)
         point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
@@ -621,7 +621,7 @@ if PAIRWISE_TRAIN:
         for _fold in range(NFOLDS):
             torch.cuda.empty_cache()
             device = torch.device("cuda:0")
-            config = LightLxmertConfig()
+            config = LightECTNetConfig()
             point_model = PointClfModel(ENCODE_DIM, config)
             point_model = nn.DataParallel(point_model)
             point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
@@ -694,7 +694,7 @@ if DISTILL_TRAIN:
 
         torch.cuda.empty_cache()
         device = torch.device("cuda:0")
-        config = LightLxmertConfig()
+        config = LightECTNetConfig()
         point_model = PointClfModel(ENCODE_DIM, config)
         point_model = nn.DataParallel(point_model)
         point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
@@ -756,7 +756,7 @@ if DISTILL_TRAIN:
         for _fold in range(NFOLDS):
             torch.cuda.empty_cache()
             device = torch.device("cuda:0")
-            config = LightLxmertConfig()
+            config = LightECTNetConfig()
             point_model = PointClfModel(ENCODE_DIM, config)
             point_model = nn.DataParallel(point_model)
             point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
@@ -829,7 +829,7 @@ if DISTILL_TRAIN2:
 
         torch.cuda.empty_cache()
         device = torch.device("cuda:0")
-        config = LightLxmertConfig()
+        config = LightECTNetConfig()
         point_model = PointClfModel(ENCODE_DIM, config)
         point_model = nn.DataParallel(point_model)
         point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
@@ -916,7 +916,7 @@ if DISTILL_TRAIN2:
         for _fold in range(NFOLDS):
             torch.cuda.empty_cache()
             device = torch.device("cuda:0")
-            config = LightLxmertConfig()
+            config = LightECTNetConfig()
             point_model = PointClfModel(ENCODE_DIM, config)
             point_model = nn.DataParallel(point_model)
             point_model.load_state_dict(torch.load(f'{SAVE_PATH}/pointwise_model.bin'))
