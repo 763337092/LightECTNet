@@ -17,10 +17,10 @@ cd ./code2
 python title_w2v_feat_new.py
 python make_seg_feat.py
 
-# train models (largest model takes about 40h on single P40)
+# train model
 CUDA_VISIBLE_DEVICES=0 python run_LightECTNet.py > LightECTNet_log.txt &
 
-# other models
+# train other models (largest model takes about 40h on single P40)
 '''
 CUDA_VISIBLE_DEVICES=0 python final_enhancedrcnn1001.py > log0.txt &
 CUDA_VISIBLE_DEVICES=1 python final_esim1011_5.py > log1.txt &
